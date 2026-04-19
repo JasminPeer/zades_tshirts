@@ -4,30 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZADES | Premium Ecommerce</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=15">
 </head>
 <body>
     <!-- Top Navbar -->
     <nav class="navbar">
-        <div class="logo-container">
-            <h1 class="logo">ZADES</h1>
-            <span class="logo-animation">ANIMATION</span>
-        </div>
         <div class="nav-links">
-            <a href="#">Supreme Edition</a>
-            <a href="#">Epic Thread</a>
-            <a href="#">Premium</a>
-            <a href="#">Top Wear</a>
-            <a href="#">All Products</a>
+            <a href="#">Shop All</a>
+            <a href="#">Tees</a>
+            <a href="#">Bundles</a>
         </div>
-        <div class="nav-actions">
-            <div class="search-bar">
-                <input type="text" placeholder="Try searching 'T-shirts'">
-                <span>🔍</span>
+        <div class="logo">ZADES</div>
+        <div class="nav-right">
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme">
+                <span class="theme-icon">✨</span>
+            </button>
+            <div class="auth-links">
+                <a href="#">Login</a>
+                <a href="#" class="cart-icon">Cart (0)</a>
             </div>
-            <button id="theme-toggle" class="icon-btn">🌓</button>
-            <button class="icon-btn">👤</button>
-            <button class="icon-btn">🛒</button>
         </div>
     </nav>
 
@@ -44,13 +39,8 @@
         </div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1 class="hero-title" id="hero-title">
-                <span class="letter">Z</span>
-                <span class="letter">A</span>
-                <span class="letter">D</span>
-                <span class="letter">E</span>
-                <span class="letter">S</span>
-            </h1>
+            <canvas id="particle-canvas"></canvas>
+            <h1 class="visually-hidden">ZADES</h1>
         </div>
     </header>
 

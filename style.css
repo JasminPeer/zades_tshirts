@@ -165,57 +165,32 @@ body {
 
 .hero-content {
     text-align: center;
-    z-index: 1;
-    transform-style: preserve-3d;
-    pointer-events: none; /* Allows mouse through text to background */
-}
-
-.hero-title {
-    font-size: 15vw;
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: 0px; 
-    text-transform: uppercase;
-    display: flex;
-    justify-content: center;
-    gap: 1vw;
-    will-change: transform;
-}
-
-/* Staggered Premium Wave Letters with Texture */
-.letter {
-    display: inline-block;
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
-    background-size: cover;
-    background-position: center; 
-    
-    /* Clean, luxurious 3D block shadow */
-    filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.9));
-    
-    /* Elegant 3D heavy wave - NO COLOR SHIFTING */
-    animation: premiumWave 3s ease-in-out infinite alternate;
+    z-index: 10;
+    pointer-events: none;
     transform-style: preserve-3d;
 }
 
-/* Unique texture for each letter with a continuous rippling stagger delay */
-.letter:nth-child(1) { background-image: url('assets/oversize.webp'); animation-delay: 0.0s; }
-.letter:nth-child(2) { background-image: url('assets/polo.webp'); animation-delay: 0.4s; }
-.letter:nth-child(3) { background-image: url('assets/v-neck.webp'); animation-delay: 0.8s; }
-.letter:nth-child(4) { background-image: url('assets/graphic.webp'); animation-delay: 1.2s; }
-.letter:nth-child(5) { background-image: url('assets/butterfly.png'); animation-delay: 1.6s; }
+.hero-content {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100vw; height: 100%;
+    z-index: 10;
+    pointer-events: auto;
+}
 
-/* A slow, luxurious, heavy 3D pendulum wave without breaking aesthetics */
-@keyframes premiumWave {
-    0% { 
-        transform: perspective(800px) rotateY(-20deg) translateZ(0) translateY(10px); 
-        filter: drop-shadow(-10px 5px 10px rgba(0,0,0,0.8)) brightness(0.6);
-    }
-    100% { 
-        transform: perspective(800px) rotateY(20deg) translateZ(60px) translateY(-15px); 
-        filter: drop-shadow(20px 40px 20px rgba(0,0,0,0.9)) brightness(1.3);
-    }
+#particle-canvas {
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
 }
 
 /* HOVER PAN FOR GRID IMAGES */

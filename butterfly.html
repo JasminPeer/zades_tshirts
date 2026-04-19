@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZADES | Archive Butterfly Inside</title>
+    <style>
+        body { margin: 0; padding: 0; background: #e0e0e0; overflow: hidden; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh;}
+        header { padding: 1.5rem; text-align: center; }
+        header a { text-decoration: none; color: black; font-weight: bold; font-size: 1.5rem; letter-spacing: 2px;}
+        
+        .product-stage {
+            flex-grow: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 2000px;
+        }
+
+        .main-tshirt {
+            height: 80vh;
+            max-width: 90vw;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));
+            z-index: 10;
+        }
+
+        .butterfly {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 50 C20 10, 0 40, 45 45 C45 45, 45 55, 45 55 C0 60, 20 90, 50 50 C80 10, 100 40, 55 45 C55 45, 55 55, 55 55 C100 60, 80 90, 50 50 Z" fill="url(%23gradient)"/><defs><linearGradient id="gradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="%23ff6b6b"/><stop offset="100%" stop-color="%234ecdc4"/></linearGradient></defs></svg>');
+            background-size: cover;
+            pointer-events: none;
+            z-index: 20;
+            transform-style: preserve-3d;
+            animation: flap 0.2s linear alternate infinite, swarm 15s linear infinite;
+        }
+
+        /* The Wings Flap */
+        @keyframes flap {
+            0% { transform: scaleX(1) rotateZ(0deg); }
+            100% { transform: scaleX(0.2) rotateZ(10deg); }
+        }
+
+        /* Massive Swarm paths around the shirt in 3D */
+        @keyframes swarm {
+            0% { left: 10%; top: 90%; transform: translateZ(-200px); }
+            25% { left: 80%; top: 20%; transform: translateZ(300px); }
+            50% { left: 40%; top: 10%; transform: translateZ(-100px); }
+            75% { left: 20%; top: 60%; transform: translateZ(400px); }
+            100% { left: 10%; top: 90%; transform: translateZ(-200px); }
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html">← BACK TO ZADES</a>
+    </header>
+
+    <div class="product-stage" id="stage">
+        <img src="assets/butterfly.png" alt="Butterfly Shirt" class="main-tshirt">
+        
+        <!-- Generate multiples via tiny script to randomize start positions/delays -->
+        <script>
+            const stage = document.getElementById('stage');
+            for(let i=0; i<15; i++) {
+                let b = document.createElement('div');
+                b.className = 'butterfly';
+                b.style.animationDelay = `-${Math.random() * 15}s`;
+                b.style.width = `${30 + Math.random() * 60}px`;
+                b.style.height = b.style.width;
+                b.style.opacity = 0.7 + Math.random() * 0.3;
+                stage.appendChild(b);
+            }
+        </script>
+    </div>
+
+</body>
+</html>

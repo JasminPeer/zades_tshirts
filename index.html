@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZADES | Premium Ecommerce</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Top Navbar -->
+    <nav class="navbar">
+        <div class="logo-container">
+            <h1 class="logo">ZADES</h1>
+            <span class="logo-animation">ANIMATION</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Supreme Edition</a>
+            <a href="#">Epic Thread</a>
+            <a href="#">Premium</a>
+            <a href="#">Top Wear</a>
+            <a href="#">All Products</a>
+        </div>
+        <div class="nav-actions">
+            <div class="search-bar">
+                <input type="text" placeholder="Try searching 'T-shirts'">
+                <span>🔍</span>
+            </div>
+            <button id="theme-toggle" class="icon-btn">🌓</button>
+            <button class="icon-btn">👤</button>
+            <button class="icon-btn">🛒</button>
+        </div>
+    </nav>
+
+
+    <!-- Hero Section -->
+    <header class="hero" id="hero">
+        <!-- 3D Panoramic Image Row (Single Row) -->
+        <div class="hero-3d-cage">
+            <img src="assets/polo.webp" alt="Polo" class="cage-img pos-1">
+            <img src="assets/v-neck.webp" alt="V-Neck" class="cage-img pos-2">
+            <img src="assets/pose_front.png" alt="Zades Main" class="cage-img pos-3">
+            <img src="assets/oversize.webp" alt="Oversize" class="cage-img pos-4">
+            <img src="assets/graphic.webp" alt="Graphic" class="cage-img pos-5">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title" id="hero-title">
+                <span class="letter">Z</span>
+                <span class="letter">A</span>
+                <span class="letter">D</span>
+                <span class="letter">E</span>
+                <span class="letter">S</span>
+            </h1>
+        </div>
+    </header>
+
+    <!-- Marquee moved directly under the hero -->
+    <div class="marquee-wrapper">
+        <div class="marquee">
+            <div class="marquee-content scroll">
+                <!-- Half 1 -->
+                <span>ZADES</span> <span>•</span> <span>PREMIUM STREETWEAR</span> <span>•</span>
+                <span>EXCLUSIVE COLLECTION</span> <span>•</span> <span>LIMITED ARCHIVE CAGE</span> <span>•</span>
+                <!-- Half 2 (Exact duplicate for seamless looping) -->
+                <span>ZADES</span> <span>•</span> <span>PREMIUM STREETWEAR</span> <span>•</span>
+                <span>EXCLUSIVE COLLECTION</span> <span>•</span> <span>LIMITED ARCHIVE CAGE</span> <span>•</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="main-container">
+        
+        <!-- Sidebar Filters -->
+        <aside class="sidebar">
+            <h3 class="filter-header">FILTERS</h3>
+            <button class="sort-btn">⇆ SORT BY: FEATURED</button>
+
+            <!-- Filter Group: Size -->
+            <div class="filter-group">
+                <h4 class="filter-title">Size <span>^</span></h4>
+                <label class="filter-option"><input type="checkbox"> <span>S</span></label>
+                <label class="filter-option"><input type="checkbox"> <span>M</span></label>
+                <label class="filter-option"><input type="checkbox"> <span>L</span></label>
+                <label class="filter-option"><input type="checkbox"> <span>XL</span></label>
+                <label class="filter-option"><input type="checkbox"> <span>XXL</span></label>
+            </div>
+
+            <!-- Filter Group: Price -->
+            <div class="filter-group">
+                <h4 class="filter-title">Price <span>^</span></h4>
+                <p class="price-range">Selected Price Range</p>
+                <p class="price-values">₹0 - ₹2000</p>
+                <input type="range" min="0" max="2000" value="2000" class="slider">
+            </div>
+
+            <!-- Filter Group: Color -->
+            <div class="filter-group">
+                <h4 class="filter-title">Color <span>^</span></h4>
+                <label class="filter-option"><input type="checkbox"> <span>Lilac</span></label>
+                <label class="filter-option"><input type="checkbox"> <span>Navy</span></label>
+                <label class="filter-option"><input type="checkbox"> <span>Royal Blue</span></label>
+                <label class="filter-option"><input type="checkbox"> <span>Sky Blue</span></label>
+                <label class="filter-option"><input type="checkbox"> <span>Aqua Blue</span></label>
+            </div>
+
+            <!-- More simplified groups for visual mimicry -->
+            <div class="filter-group">
+                <h4 class="filter-title">Fabric <span>^</span></h4>
+                <label class="filter-option"><input type="checkbox"> <span>100% Cotton</span></label>
+            </div>
+            <div class="filter-group">
+                <h4 class="filter-title">Character <span>^</span></h4>
+                <label class="filter-option"><input type="checkbox"> <span>Marvel</span></label>
+                <label class="filter-option"><input type="checkbox"> <span>Spiderman</span></label>
+            </div>
+        </aside>
+
+        <!-- Product Grid -->
+        <main class="product-grid">
+            
+            <!-- Card 1 (Polo) -->
+            <div class="product-card">
+                <div class="image-container hover-pan">
+                    <div class="badge-container">
+                        <span class="badge offer">BUY 3 @1199</span>
+                        <span class="badge bestseller">BEST SELLER</span>
+                    </div>
+                    <img src="assets/polo.webp" class="main-image obj-pan" alt="Zades Polo">
+                    <div class="rating-overlay">⭐ 4.8 | 145</div>
+                </div>
+
+                <div class="product-info">
+                    <h5 class="product-title">Zades Premium Cotton Polo</h5>
+                    <div class="price-block">
+                        <span class="current-price">₹549</span>
+                        <span class="old-price">₹1,199</span>
+                        <span class="discount">54% off</span>
+                    </div>
+                    <p class="best-price">🏷️ Best price ₹399</p>
+                    <button class="add-to-cart">ADD TO CART</button>
+                </div>
+            </div>
+
+            <!-- Card 2 (Oversize) -->
+            <div class="product-card">
+                <div class="image-container hover-pan">
+                    <div class="badge-container">
+                        <span class="badge offer">BUY 3 @1199</span>
+                    </div>
+                    <img src="assets/oversize.webp" class="main-image obj-pan" alt="Archive Oversize">
+                    <div class="rating-overlay">⭐ 4.6 | 163</div>
+                </div>
+
+                <div class="product-info">
+                    <h5 class="product-title">The Archive Heavyweight Oversized T-shirt</h5>
+                    <div class="price-block">
+                        <span class="current-price">₹649</span>
+                        <span class="old-price">₹1,499</span>
+                        <span class="discount">63% off</span>
+                    </div>
+                    <p class="best-price">🏷️ Best price ₹499</p>
+                    <button class="add-to-cart">ADD TO CART</button>
+                </div>
+            </div>
+
+            <!-- Card 3 (V-Neck) -->
+            <div class="product-card">
+                <div class="image-container hover-pan">
+                    <div class="badge-container">
+                        <span class="badge bestseller">BEST SELLER</span>
+                    </div>
+                    <img src="assets/v-neck.webp" class="main-image obj-pan" alt="Core V-Neck">
+                    <div class="rating-overlay">⭐ 4.5 | 458</div>
+                </div>
+
+                <div class="product-info">
+                    <h5 class="product-title">Zades Core V-Neck Essential</h5>
+                    <div class="price-block">
+                        <span class="current-price">₹449</span>
+                        <span class="old-price">₹999</span>
+                        <span class="discount">50% off</span>
+                    </div>
+                    <p class="best-price">🏷️ Best price ₹349</p>
+                    <button class="add-to-cart">ADD TO CART</button>
+                </div>
+            </div>
+
+            <!-- Card 4 (Zades Printed) -->
+            <div class="product-card">
+                <div class="image-container hover-pan">
+                    <div class="badge-container">
+                        <span class="badge offer">BUY 3 @1199</span>
+                    </div>
+                    <img src="assets/pose_front.png" class="main-image obj-pan" alt="Zades Original Printed">
+                    <div class="rating-overlay">⭐ 4.9 | 89</div>
+                </div>
+
+                <div class="product-info">
+                    <h5 class="product-title">Zades Original Typography Print T-shirt</h5>
+                    <div class="price-block">
+                        <span class="current-price">₹599</span>
+                        <span class="old-price">₹1,299</span>
+                        <span class="discount">54% off</span>
+                    </div>
+                    <p class="best-price">🏷️ Best price ₹449</p>
+                    <button class="add-to-cart">ADD TO CART</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -283,6 +283,9 @@ function openCategory(catId) {
             <span class="product-price">₹${p.price}</span>
             <span class="stock-pill ${stock.cls}">${stock.label}</span>
           </div>
+          <button class="product-buy-btn" onclick="event.stopPropagation(); openProductModal(${JSON.stringify(p).replace(/"/g,'&quot;')})">
+            Buy Now
+          </button>
         </div>
       </div>`;
   }).join('');
@@ -460,6 +463,12 @@ function addToCartModal() {
       }
     }, 600);
   }
+}
+
+function buyNowModal() {
+  if (!currentSize) { showToast('Please select a size'); return; }
+  addToCartModal();
+  proceedCheckout();
 }
 
 // ===== ADD TO WISHLIST =====

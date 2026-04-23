@@ -115,9 +115,8 @@
 <!-- ========== HERO SECTION ========== -->
 <section class="hero" id="hero">
   <div class="hero-video-wrap">
-    <video id="hero-video" autoplay muted loop playsinline poster="assets/oversized.jpeg">
-      <!-- Replace src with: assets/zades_video.mp4 when video is ready -->
-      <source src="assets/zades_video.mp4" type="video/mp4">
+    <video id="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/logo-zades.jpeg">
+      <source src="assets/Video_Editing_Workflow_A_man_walks_through_industrial_and_minimalist_giYpIH_U.mp4" type="video/mp4">
     </video>
     <div class="hero-video-placeholder" id="hero-placeholder">
       <div class="placeholder-inner">
@@ -241,6 +240,7 @@
       <div class="modal-stock" id="modal-stock"></div>
       <div class="modal-btns">
         <button class="btn-wishlist" onclick="addToWishlistModal()">♡ Wishlist</button>
+        <button class="btn-cart" onclick="buyNowModal()">Buy Now</button>
         <button class="btn-cart" onclick="addToCartModal()">Add to Cart</button>
       </div>
     </div>

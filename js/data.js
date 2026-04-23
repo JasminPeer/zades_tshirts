@@ -13,13 +13,13 @@ const ZADES_PRODUCTS = {
       price: 849,
       category: 'oversized',
       // tshirt: oversized__3_.jpeg (blue cherub) & oversized__6_.jpeg (pink cherub)
-      // model:  no dedicated model shot for cherub — using promo oversized.png as fallback
+      // model: dedicated model shots available for each color
       tshirt: 'assets/cherub_tshirt_blue.jpeg',
-      modelImg: 'assets/cherub_tshirt_blue.jpeg',
+      modelImg: 'assets/cherub_model_blue.jpg',
       images: ['assets/cherub_tshirt_blue.jpeg', 'assets/cherub_tshirt_pink.jpeg'],
       colors: [
-        { name: 'Royal Blue', hex: '#2563EB', image: 'assets/cherub_tshirt_blue.jpeg', modelImage: 'assets/cherub_tshirt_blue.jpeg' },
-        { name: 'Baby Pink', hex: '#F9A8D4', image: 'assets/cherub_tshirt_pink.jpeg', modelImage: 'assets/cherub_tshirt_pink.jpeg' },
+        { name: 'Royal Blue', hex: '#2563EB', image: 'assets/cherub_tshirt_blue.jpeg', modelImage: 'assets/cherub_model_blue.jpg' },
+        { name: 'Baby Pink', hex: '#F9A8D4', image: 'assets/cherub_tshirt_pink.jpeg', modelImage: 'assets/cherub_model_pink.jpg' },
       ],
       sizes: { XS: 5, S: 8, M: 10, L: 6, XL: 3, XXL: 2 },
     },
@@ -30,13 +30,13 @@ const ZADES_PRODUCTS = {
       price: 899,
       category: 'oversized',
       // tshirt: oversized__4_.jpeg (black mammoth), oversized__7_.jpeg (white with red mammoth)
-      // model:  no dedicated model — hustle model used as closest black tee
+      // model: dedicated model shots available for each color
       tshirt: 'assets/mammoth_tshirt_black.jpeg',
-      modelImg: 'assets/mammoth_tshirt_black.jpeg',
+      modelImg: 'assets/mammoth_model_black.jpg',
       images: ['assets/mammoth_tshirt_black.jpeg', 'assets/mammoth_tshirt_white.jpeg'],
       colors: [
-        { name: 'Jet Black', hex: '#111111', image: 'assets/mammoth_tshirt_black.jpeg', modelImage: 'assets/mammoth_tshirt_black.jpeg' },
-        { name: 'Pure White', hex: '#F5F5F5', image: 'assets/mammoth_tshirt_white.jpeg', modelImage: 'assets/mammoth_tshirt_white.jpeg' },
+        { name: 'Jet Black', hex: '#111111', image: 'assets/mammoth_tshirt_black.jpeg', modelImage: 'assets/mammoth_model_black.jpg' },
+        { name: 'Pure White', hex: '#F5F5F5', image: 'assets/mammoth_tshirt_white.jpeg', modelImage: 'assets/mammoth_model_white.jpg' },
       ],
       sizes: { XS: 0, S: 5, M: 8, L: 4, XL: 2, XXL: 0 },
     },

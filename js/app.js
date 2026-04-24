@@ -1,4 +1,4 @@
-// ===== ZADES App Logic — Fixed Full Version =====
+// ===== ZADES App Logic v2.0 — All Fixes Applied =====
 
 // ===== STATE =====
 let cart = JSON.parse(localStorage.getItem('zades_cart') || '[]');
@@ -10,6 +10,7 @@ let currentQty = 1;
 let currentSize = null;
 
 // ===== CINEMATIC LOADER =====
+// Only show loader on fresh page load, not on back navigation
 (function initLoader() {
   const pg = document.querySelector('.loader-pg');
   const cv = document.getElementById('loader-cv');
@@ -33,7 +34,7 @@ let currentSize = null;
   function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
 
   function drawBg() {
-    ctx.fillStyle = '#000';
+    ctx.fillStyle = '#0a0a0a';
     ctx.fillRect(0, 0, W, H);
   }
 
@@ -102,16 +103,37 @@ let currentSize = null;
     loader.style.opacity = '0';
     setTimeout(() => {
       loader.style.display = 'none';
-      const visited = localStorage.getItem('zades_visited');
+      // Show auth only on first ever visit and not logged in
+      const visited = sessionStorage.getItem('zades_session_started');
       if (!visited && !currentUser) {
         document.getElementById('auth-modal').style.display = 'flex';
       }
+      // Mark this session so loader won't show again on back nav
+      sessionStorage.setItem('zades_session_started', '1');
       localStorage.setItem('zades_visited', '1');
     }, 800);
   }
 
-  setTimeout(() => raf = requestAnimationFrame(mainLoop), 200);
+  // FIX: Skip loader if navigating back within same session (bfcache/history)
+  // Use sessionStorage so loader runs once per session tab
+  const alreadyStarted = sessionStorage.getItem('zades_session_started');
+  if (alreadyStarted) {
+    // Already loaded this session — skip loader immediately
+    const loader = document.getElementById('loader');
+    if (loader) loader.style.display = 'none';
+  } else {
+    setTimeout(() => raf = requestAnimationFrame(mainLoop), 200);
+  }
 })();
+
+// Handle browser back/forward cache (bfcache)
+window.addEventListener('pageshow', function(e) {
+  if (e.persisted) {
+    // Page was restored from bfcache (back button)
+    const loader = document.getElementById('loader');
+    if (loader) loader.style.display = 'none';
+  }
+});
 
 // ===== AUTH =====
 function showAuthModal() {
@@ -165,8 +187,7 @@ function toggleProfile() {
   const dd = document.getElementById('profile-dropdown');
   if (!dd) return;
   const isOpen = dd.style.display === 'block';
-  // Close all dropdowns first
-  document.getElementById('profile-dropdown').style.display = 'none';
+  dd.style.display = 'none';
   if (!isOpen) dd.style.display = 'block';
 }
 
@@ -190,6 +211,72 @@ window.addEventListener('scroll', () => {
   const nav = document.getElementById('navbar');
   if (nav) nav.classList.toggle('scrolled', window.scrollY > 60);
 });
+
+// ===== PROFILE LINKS: My Orders & Wishlist — FIXED =====
+// These now open the sidebar panel directly instead of broken anchor nav
+function goToOrders() {
+  const dd = document.getElementById('profile-dropdown');
+  if (dd) dd.style.display = 'none';
+
+  if (!currentUser) {
+    showAuthModal();
+    return;
+  }
+
+  // Render orders in a modal
+  const orders = JSON.parse(localStorage.getItem('zades_orders') || '[]');
+  let html = '';
+  if (!orders.length) {
+    html = '<p style="padding:24px;text-align:center;color:#888;font-family:var(--font-sans);font-size:13px">No orders yet. Start shopping! ✦</p>';
+  } else {
+    html = [...orders].reverse().map(o => {
+      const items = o.items.map(i => `${i.name} (${i.size}, ×${i.qty})`).join(', ');
+      const date = new Date(o.date).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+      return `
+        <div class="order-card">
+          <h4>Order #${o.id}</h4>
+          <p>${items}</p>
+          <p style="margin-top:6px;font-size:11px;color:#aaa">${date} · ₹${o.total}</p>
+          <span class="order-status">${o.status || 'Confirmed'}</span>
+        </div>`;
+    }).join('');
+  }
+
+  showInfoModal('My Orders', html);
+}
+
+function goToWishlistPanel() {
+  const dd = document.getElementById('profile-dropdown');
+  if (dd) dd.style.display = 'none';
+  toggleWishlist();
+}
+
+function showInfoModal(title, bodyHTML) {
+  let modal = document.getElementById('info-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'info-modal';
+    modal.style.cssText = `
+      position:fixed;inset:0;z-index:4000;
+      background:rgba(10,10,10,0.78);
+      backdrop-filter:blur(10px);
+      display:flex;align-items:center;justify-content:center;
+      padding:20px;`;
+    modal.innerHTML = `
+      <div style="background:#fff;color:#0a0a0a;border-radius:6px;padding:36px;width:100%;max-width:580px;max-height:85vh;overflow-y:auto;position:relative;box-shadow:0 24px 64px rgba(0,0,0,0.35)">
+        <button onclick="document.getElementById('info-modal').style.display='none'"
+          style="position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:1px solid #d6cfc0;font-size:14px;color:#0a0a0a;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s"
+          onmouseover="this.style.background='#2c6fdb';this.style.color='#fff'"
+          onmouseout="this.style.background='none';this.style.color='#0a0a0a'">✕</button>
+        <h2 style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;margin-bottom:24px" id="info-modal-title"></h2>
+        <div id="info-modal-body"></div>
+      </div>`;
+    document.body.appendChild(modal);
+  }
+  document.getElementById('info-modal-title').textContent = title;
+  document.getElementById('info-modal-body').innerHTML = bodyHTML;
+  modal.style.display = 'flex';
+}
 
 // ===== SEARCH =====
 function handleSearch(q) {
@@ -257,20 +344,17 @@ function openCategory(catId) {
 
   grid.innerHTML = prods.map(p => {
     const stock = getStockStatus(p.sizes);
-    // Color dots
     const colors = p.colors.map((c, i) =>
       `<div class="color-dot ${i===0?'active':''}" style="background:${c.hex}"
         onclick="event.stopPropagation();switchCardColor(this,'${p.id}',${i})" title="${c.name}"></div>`
     ).join('');
 
-    // Use tshirt as default, model on hover
     const tshirtSrc = p.tshirt || p.images[0];
     const modelSrc = p.modelImg || p.images[0];
 
     return `
       <div class="product-card" onclick="openProductModal(${JSON.stringify(p).replace(/"/g,'&quot;')})">
         <div class="product-card-img">
-          <!-- tshirt shown by default, model shown on hover -->
           <img src="${tshirtSrc}" alt="${p.name}" class="pc-tshirt" id="card-tshirt-${p.id}">
           <img src="${modelSrc}" alt="${p.name} model" class="pc-model" id="card-model-${p.id}"
             onerror="this.src='${tshirtSrc}';this.style.objectFit='contain';this.style.padding='16px'">
@@ -292,13 +376,17 @@ function openCategory(catId) {
 
   document.querySelector('.collections').style.display = 'none';
   page.style.display = 'block';
-  page.scrollIntoView({ behavior: 'smooth' });
+  // Scroll to top of page (not smooth so the page appears fresh)
+  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 function closeCatPage() {
   document.getElementById('cat-page').style.display = 'none';
   document.querySelector('.collections').style.display = 'block';
-  document.querySelector('.collections').scrollIntoView({ behavior: 'smooth' });
+  // Scroll to collections section
+  setTimeout(() => {
+    document.querySelector('.collections').scrollIntoView({ behavior: 'smooth' });
+  }, 50);
 }
 
 function switchCardColor(dotEl, prodId, idx) {
@@ -329,7 +417,6 @@ function openProductModal(p) {
   document.getElementById('modal-price').textContent = `₹${p.price}`;
   document.getElementById('modal-qty').textContent = '1';
 
-  // Modal images: model shown by default, tshirt on hover
   const imgWrap = document.getElementById('modal-images');
   const tshirtSrc = p.tshirt || p.images[0];
   const modelSrc = p.modelImg || p.images[1] || p.images[0];
@@ -339,7 +426,6 @@ function openProductModal(p) {
       <img src="${modelSrc}" alt="${p.name} model" class="modal-img-model" id="modal-main-img">
     </div>`;
 
-  // Thumbnail strip
   const thumbsDiv = document.getElementById('modal-thumbs');
   if (thumbsDiv) {
     thumbsDiv.innerHTML = p.images.map((src, i) =>
@@ -347,7 +433,6 @@ function openProductModal(p) {
     ).join('');
   }
 
-  // Colors
   const colorsDiv = document.getElementById('modal-colors');
   if (p.colors && p.colors.length > 0) {
     colorsDiv.innerHTML = `<label>Color — <span id="color-name">${p.colors[0].name}</span></label>
@@ -361,7 +446,6 @@ function openProductModal(p) {
     colorsDiv.innerHTML = '';
   }
 
-  // Sizes
   const sizesDiv = document.getElementById('modal-sizes');
   const sizeKeys = Object.keys(p.sizes);
   sizesDiv.innerHTML = `<label>Size</label>
@@ -374,7 +458,6 @@ function openProductModal(p) {
   const stock = getStockStatus(p.sizes);
   document.getElementById('modal-stock').textContent = stock.label;
 
-  // Wishlist button state
   const wishBtn = document.querySelector('.btn-wishlist');
   if (wishBtn) {
     const inWish = wishlist.some(w => w.id === p.id);
@@ -404,10 +487,8 @@ function selectColor(idx) {
   document.querySelectorAll('.color-opt').forEach((el, i) => el.classList.toggle('selected', i === idx));
   if (p.colors[idx]) {
     document.getElementById('color-name').textContent = p.colors[idx].name;
-    // Update tshirt image (hover layer)
     const tshirtImg = document.querySelector('.modal-img-tshirt');
     if (tshirtImg) tshirtImg.src = p.colors[idx].image;
-    // Update model image (default/primary layer)
     const modelImg = document.querySelector('.modal-img-model');
     if (modelImg && p.colors[idx].modelImage) modelImg.src = p.colors[idx].modelImage;
   }
@@ -419,7 +500,6 @@ function selectSize(btn, size) {
   btn.classList.add('selected');
 }
 
-// ===== QTY COUNTER — FIXED =====
 function changeQty(delta) {
   currentQty = Math.max(1, Math.min(10, (currentQty || 1) + delta));
   const qtyEl = document.getElementById('modal-qty');
@@ -454,11 +534,10 @@ function addToCartModal() {
   closeProductModal();
   showToast(`${p.name} added to cart ✦`);
 
-  // Prompt to fill delivery profile if not set
   const profile = JSON.parse(localStorage.getItem('zades_delivery_profile') || 'null');
   if (!profile) {
     setTimeout(() => {
-      if (confirm('Add your delivery address now for faster checkout?\n(Mobile, Address, City, Pincode, Alt Mobile)')) {
+      if (confirm('Add your delivery address now for faster checkout?')) {
         openDeliveryProfile();
       }
     }, 600);
@@ -467,7 +546,19 @@ function addToCartModal() {
 
 function buyNowModal() {
   if (!currentSize) { showToast('Please select a size'); return; }
-  addToCartModal();
+  // Add to cart silently first, then open checkout
+  const p = currentProduct;
+  const color = p.colors[currentColorIdx]?.name || 'Default';
+  const image = p.colors[currentColorIdx]?.image || p.tshirt || p.images[0];
+  const cartKey = `${p.id}_${color}_${currentSize}`;
+  const existing = cart.find(i => i.id === cartKey);
+  if (existing) {
+    existing.qty += currentQty;
+  } else {
+    cart.push({ id: cartKey, productId: p.id, name: p.name, price: p.price, color, size: currentSize, qty: currentQty, image, category: p.category });
+  }
+  saveCart();
+  closeProductModal();
   proceedCheckout();
 }
 
@@ -518,7 +609,7 @@ function toggleCart() {
 function renderCart() {
   const div = document.getElementById('cart-items');
   if (!cart.length) {
-    div.innerHTML = '<p style="padding:24px;text-align:center;color:#888">Your cart is empty</p>';
+    div.innerHTML = '<p style="padding:24px;text-align:center;color:#888;font-family:var(--font-sans);font-size:13px">Your cart is empty</p>';
   } else {
     div.innerHTML = cart.map((item, idx) => `
       <div class="cart-item">
@@ -540,7 +631,6 @@ function renderCart() {
   document.getElementById('cart-total').textContent = `₹${total}`;
 }
 
-// In-cart qty change
 function cartChangeQty(idx, delta) {
   if (!cart[idx]) return;
   cart[idx].qty = Math.max(1, Math.min(10, cart[idx].qty + delta));
@@ -575,7 +665,7 @@ function renderWishlist() {
   const div = document.getElementById('wish-items');
   if (!div) return;
   if (!wishlist.length) {
-    div.innerHTML = '<p style="padding:24px;text-align:center;color:#888">Your wishlist is empty</p>';
+    div.innerHTML = '<p style="padding:24px;text-align:center;color:#888;font-family:var(--font-sans);font-size:13px">Your wishlist is empty</p>';
   } else {
     div.innerHTML = wishlist.map(item => `
       <div class="wish-item">
@@ -583,7 +673,7 @@ function renderWishlist() {
         <div class="cart-item-info">
           <h5>${item.name}</h5>
           <p>₹${item.price}</p>
-          <button style="font-size:10px;letter-spacing:0.1em;margin-top:6px;padding:4px 10px;border:1px solid #000;background:none;cursor:pointer"
+          <button style="font-size:10px;letter-spacing:0.1em;margin-top:6px;padding:4px 10px;border:1px solid #1a3a6b;background:none;cursor:pointer;color:#1a3a6b;border-radius:2px"
             onclick="addWishToCart('${item.id}')">Add to Cart</button>
         </div>
         <button class="remove-btn" onclick="removeFromWish('${item.id}')">✕</button>
@@ -649,11 +739,11 @@ function closeDeliveryProfile() {
   closeAll();
 }
 
-// ===== CHECKOUT =====
+// ===== CHECKOUT — PAYMENT FLOW FIXED =====
 function proceedCheckout() {
   if (!cart.length) { showToast('Your cart is empty'); return; }
   if (!currentUser) {
-    document.getElementById('auth-modal').style.display = 'flex';
+    showAuthModal();
     return;
   }
   closeAll();
@@ -675,12 +765,23 @@ function proceedCheckout() {
   const total = cart.reduce((a, i) => a + i.price * i.qty, 0);
   html += `<div class="summary-total"><span>Total</span><span>₹${total}</span></div>`;
   summary.innerHTML = html;
-  document.getElementById('checkout-modal').style.display = 'flex';
-  document.getElementById('overlay').style.display = 'block';
+
+  // Show checkout modal — ensure it is visible and bright
+  const checkoutModal = document.getElementById('checkout-modal');
+  checkoutModal.style.display = 'flex';
+  checkoutModal.style.zIndex = '5000'; // above everything including overlay
+
+  // Show overlay below checkout
+  const overlay = document.getElementById('overlay');
+  overlay.style.display = 'block';
+  overlay.style.zIndex = '4900';
+
+  document.body.style.overflow = 'hidden';
 }
 
 function closeCheckout() {
-  document.getElementById('checkout-modal').style.display = 'none';
+  const checkoutModal = document.getElementById('checkout-modal');
+  if (checkoutModal) checkoutModal.style.display = 'none';
   closeAll();
 }
 
@@ -700,7 +801,6 @@ function placeOrder() {
   if (altmobile && !/^\d{10}$/.test(altmobile)) { showToast('Enter valid 10-digit alt mobile'); return; }
   if (!/^\d{6}$/.test(pincode)) { showToast('Enter valid 6-digit pincode'); return; }
 
-  // Save delivery profile for next time
   localStorage.setItem('zades_delivery_profile', JSON.stringify({ name, mobile, altmobile, addr: addr1, city, pincode }));
 
   const total = cart.reduce((a, i) => a + i.price * i.qty, 0);
@@ -715,7 +815,7 @@ function placeOrder() {
     image: 'assets/logo-zades.jpeg',
     prefill: { name, contact: mobile, email: currentUser?.email || '' },
     notes: { address: `${addr1}, ${city}, ${state} - ${pincode}`, altmobile },
-    theme: { color: '#000000' },
+    theme: { color: '#1a3a6b' },
     handler: function(response) {
       const orderId = 'ZD' + Date.now();
       const orders = JSON.parse(localStorage.getItem('zades_orders') || '[]');
@@ -731,15 +831,30 @@ function placeOrder() {
       closeCheckout();
       showToast(`Order confirmed! ID: ${orderId} ✦`);
     },
-    modal: { ondismiss: () => showToast('Payment cancelled') }
+    modal: {
+      ondismiss: () => {
+        // When Razorpay modal is dismissed, re-show checkout
+        document.getElementById('checkout-modal').style.display = 'flex';
+        showToast('Payment cancelled. Try again.');
+      }
+    }
   };
 
+  function openRazorpay() {
+    try {
+      new window.Razorpay(options).open();
+    } catch(err) {
+      showToast('Payment gateway error. Please try again.');
+      console.error('Razorpay error:', err);
+    }
+  }
+
   if (window.Razorpay) {
-    new window.Razorpay(options).open();
+    openRazorpay();
   } else {
     const script = document.createElement('script');
     script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.onload = () => new window.Razorpay(options).open();
+    script.onload = openRazorpay;
     script.onerror = () => showToast('Payment gateway unavailable. Please try again.');
     document.head.appendChild(script);
   }
@@ -759,7 +874,7 @@ function closeAll() {
     if (el) el.style.display = 'none';
   });
   const ov = document.getElementById('overlay');
-  if (ov) ov.style.display = 'none';
+  if (ov) { ov.style.display = 'none'; ov.style.zIndex = '2000'; }
   document.body.style.overflow = '';
 }
 

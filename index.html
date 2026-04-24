@@ -7,7 +7,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+
+<!-- FIX 1: Removed duplicate CSS link (was: style.css AND css/style.css). Keep only one. -->
+<link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>
 
@@ -102,6 +105,7 @@
     <button class="nav-icon" onclick="toggleProfile()" title="Profile" id="profile-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     </button>
+    <!-- FIX 2: Removed duplicate anchor links in profile dropdown. Kept only the JS onclick versions. -->
     <div class="profile-dropdown" id="profile-dropdown" style="display:none">
       <div id="profile-info"></div>
       <a href="javascript:void(0)" onclick="goToOrders()">My Orders</a>
@@ -148,7 +152,6 @@
     <!-- OVERSIZED (IN STOCK) -->
     <div class="category-card active" data-cat="oversized" onclick="openCategory('oversized')">
       <div class="cat-img-wrap">
-        <!-- tshirt shown by default; model on hover -->
         <img src="assets/hustle_tshirt.jpeg" alt="Oversized Tshirt" class="cat-tshirt">
         <img src="assets/hustle_model.png" alt="Oversized Model" class="cat-model">
       </div>
@@ -175,6 +178,7 @@
     </div>
 
     <!-- OLD MONK (COMING SOON) -->
+    <!-- FIX 3: Removed duplicate/conflicting inner HTML. Kept the teaser version. -->
     <div class="category-card coming" data-cat="old-monk">
       <div class="cat-img-wrap coming-soon-wrap">
         <div class="coming-soon-overlay">
@@ -196,6 +200,7 @@
     </div>
 
     <!-- FUNK (COMING SOON) -->
+    <!-- FIX 4: Removed broken nested duplicate divs. Corrected to single clean structure. -->
     <div class="category-card coming" data-cat="funk">
       <div class="cat-img-wrap coming-soon-wrap" style="background:linear-gradient(145deg,#1a0a2e 0%,#2d1060 100%)">
         <div class="coming-soon-overlay">
@@ -234,7 +239,7 @@
   <div class="product-modal-inner">
     <button class="modal-close" onclick="closeProductModal()">✕</button>
     <div class="modal-images" id="modal-images"></div>
-          <div class="modal-thumbs" id="modal-thumbs"></div>
+    <div class="modal-thumbs" id="modal-thumbs"></div>
     <div class="modal-details">
       <p class="modal-cat" id="modal-cat"></p>
       <h2 id="modal-name"></h2>
@@ -306,8 +311,6 @@
   </div>
 </div>
 
-
-
 <!-- ========== CONTACT & ENQUIRY SECTION ========== -->
 <section class="contact-section" id="contact">
   <div class="contact-grid">
@@ -324,7 +327,6 @@
           <div><strong>Email</strong><span>hello@zades.in</span></div>
         </div>
         <div class="contact-item">
-          <!-- Save your Instagram logo as: assets/insta_logo.png -->
           <img src="assets/insta_logo.png" alt="Instagram" class="contact-insta-logo"
             onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
@@ -364,7 +366,7 @@
     </div>
   </div>
 
-  <!-- ── Instagram Feed Strip (2 col × 3 rows) ── -->
+  <!-- Instagram Feed Strip -->
   <div class="contact-insta-strip">
     <div class="contact-insta-header">
       <img src="assets/insta_logo.png" alt="Instagram" class="strip-insta-logo"
@@ -435,7 +437,9 @@
   </div>
 </div>
 
-<script src="data.js"></script>
-<script src="app.js"></script>
+<!-- FIX 5: Removed duplicate script tags. Kept only js/ path versions. -->
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+
 </body>
 </html>

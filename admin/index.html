@@ -402,7 +402,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         <h1 class="page-title">Video & Media</h1>
         <div class="form-section">
           <h3>Hero Video</h3>
-          <p style="font-size:12px;color:var(--muted);margin-bottom:16px">Upload the hero section video. File should be named <strong style="color:#fff">zades_video.mp4</strong> and placed in the <strong style="color:#fff">assets/</strong> folder on your server.</p>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:16px">Upload the hero section video. File should be named <strong style="color:#fff">zadesherosectionvideo.mp4</strong> and placed in the <strong style="color:#fff">assets/</strong> folder on your server.</p>
           <div class="video-upload-zone" onclick="document.getElementById('video-upload').click()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="32" height="32" style="opacity:0.3"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
             <p>Click to preview video (does not auto-upload)</p>
@@ -410,12 +410,12 @@ tr:hover td { background: rgba(255,255,255,0.02); }
           </div>
           <div class="video-preview" id="video-preview"></div>
           <br>
-          <p style="font-size:11px;color:var(--muted)">📁 To deploy: Place your video at <code style="background:#1a1a1a;padding:2px 6px;border-radius:2px">assets/zades_video.mp4</code></p>
+          <p style="font-size:11px;color:var(--muted)">📁 To deploy: Place your video at <code style="background:#1a1a1a;padding:2px 6px;border-radius:2px">assets/zadesherosectionvideo.mp4</code></p>
         </div>
         <div class="form-section">
           <h3>Logo Image</h3>
-          <p style="font-size:12px;color:var(--muted)">Current logo: <code style="background:#1a1a1a;padding:2px 6px;border-radius:2px">assets/logo-zades.jpeg</code></p>
-          <img src="../assets/logo-zades.jpeg" alt="Logo" style="width:80px;height:80px;object-fit:contain;margin-top:12px;background:#1a1a1a;border-radius:4px;padding:8px">
+          <p style="font-size:12px;color:var(--muted)">Current logo: <code style="background:#1a1a1a;padding:2px 6px;border-radius:2px">assets/zadesmainlogo.png</code></p>
+          <img src="../assets/zadesmainlogo.png" alt="Logo" style="width:80px;height:80px;object-fit:contain;margin-top:12px;background:#1a1a1a;border-radius:4px;padding:8px;filter:brightness(0) invert(1)">
         </div>
       </div>
 
@@ -826,7 +826,7 @@ function previewVideo(e) {
   const url = URL.createObjectURL(file);
   document.getElementById('video-preview').innerHTML = `
     <video controls src="${url}" style="width:100%;max-height:200px;margin-top:12px;border-radius:4px"></video>
-    <p style="font-size:11px;color:var(--muted);margin-top:8px">Preview only. Upload this file as <strong style="color:var(--text)">assets/zades_video.mp4</strong> on your server.</p>`;
+    <p style="font-size:11px;color:var(--muted);margin-top:8px">Preview only. Upload this file as <strong style="color:var(--text)">assets/zadesherosectionvideo.mp4</strong> on your server.</p>`;
 }
 
 // ===== TOAST =====

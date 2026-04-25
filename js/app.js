@@ -42,10 +42,10 @@ let currentSize = null;
     const t = (ts - startT) / 1000;
     drawBg();
 
-    const lp = Math.min(t / 2.8, 1), leq = easeOutQuart(lp);
-    logoSvg.style.transform = `scale(${3.2 - (3.2 - 1.0) * leq})`;
-    logoSvg.style.opacity = (leq * 0.07) + '';
-    logoSvg.style.filter = `blur(${(1 - leq) * 10}px)`;
+	  const lp = Math.min(t / 2.8, 1), leq = easeOutQuart(lp);
+	  logoSvg.style.transform = `scale(${3.2 - (3.2 - 1.0) * leq})`;
+	  logoSvg.style.opacity = (leq * 0.12) + '';
+	  logoSvg.style.filter = `brightness(0) invert(1) drop-shadow(0 0 1px rgba(255,255,255,0.25)) blur(${(1 - leq) * 10}px)`;
 
     ltrs.forEach((l, i) => {
       const dir = DIRS[i], start = 0.5 + i * LETTER_GAP, p = t - start;
@@ -81,13 +81,14 @@ let currentSize = null;
     }
   }
 
-  function floatLoop(ts) {
-    if (!floatStart) floatStart = ts;
-    const t = (ts - floatStart) / 1000;
-    drawBg();
-    logoSvg.style.opacity = (0.065 + Math.sin(t * 0.45) * 0.015) + '';
-    logoSvg.style.transform = `scale(1) rotate(${Math.sin(t * 0.18) * 1.5}deg)`;
-    ltrs.forEach((l, i) => {
+	function floatLoop(ts) {
+	  if (!floatStart) floatStart = ts;
+	  const t = (ts - floatStart) / 1000;
+	  drawBg();
+	  logoSvg.style.opacity = (0.11 + Math.sin(t * 0.45) * 0.02) + '';
+	  logoSvg.style.transform = `scale(1) rotate(${Math.sin(t * 0.18) * 1.5}deg)`;
+	  logoSvg.style.filter = 'brightness(0) invert(1) drop-shadow(0 0 1px rgba(255,255,255,0.25)) blur(0px)';
+	  ltrs.forEach((l, i) => {
       const ph = i * 0.42;
       l.style.transform = `translateY(${Math.sin(t * 0.48 + ph) * 4}px) rotateX(${Math.sin(t * 0.30 + ph) * 1.0}deg)`;
       l.style.opacity = '1';
@@ -102,24 +103,13 @@ let currentSize = null;
     loader.style.opacity = '0';
     setTimeout(() => {
       loader.style.display = 'none';
-      // FIX: Single visited check using sessionStorage (not duplicate vars)
-      const visited = sessionStorage.getItem('zades_session_started');
-      if (!visited && !currentUser) {
+      if (!currentUser) {
         document.getElementById('auth-modal').style.display = 'flex';
       }
-      sessionStorage.setItem('zades_session_started', '1');
     }, 800);
   }
 
-  // Skip loader if navigating back within same session
-  const alreadyStarted = sessionStorage.getItem('zades_session_started');
-  if (alreadyStarted) {
-    const loader = document.getElementById('loader');
-    if (loader) loader.style.display = 'none';
-  } else {
-    // FIX: Only one setTimeout call here (removed orphaned duplicate below IIFE)
-    setTimeout(() => raf = requestAnimationFrame(mainLoop), 200);
-  }
+  setTimeout(() => raf = requestAnimationFrame(mainLoop), 200);
 })();
 
 // Handle browser back/forward cache (bfcache)
@@ -318,14 +308,22 @@ window.addEventListener('load', () => {
 });
 
 // ===== CATEGORIES =====
-function openCategory(catId) {
+const CATEGORY_HISTORY_VIEW = 'category';
+let activeCategoryId = null;
+
+function setCategoryPageVisibility(isOpen) {
+  document.getElementById('cat-page').style.display = isOpen ? 'block' : 'none';
+  document.querySelector('.collections').style.display = isOpen ? 'none' : 'block';
+}
+
+function renderCategoryPage(catId) {
   const prods = ZADES_PRODUCTS[catId];
   if (!prods) return;
-  const page = document.getElementById('cat-page');
   const title = document.getElementById('cat-page-title');
   const count = document.getElementById('cat-page-count');
   const grid = document.getElementById('products-grid');
 
+  activeCategoryId = catId;
   title.textContent = catId.charAt(0).toUpperCase() + catId.slice(1);
   count.textContent = `${prods.length} styles`;
 
@@ -358,20 +356,54 @@ function openCategory(catId) {
         </div>
       </div>`;
   }).join('');
-
-  document.querySelector('.collections').style.display = 'none';
-  page.style.display = 'block';
-  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
-function closeCatPage() {
-  document.getElementById('cat-page').style.display = 'none';
-  document.querySelector('.collections').style.display = 'block';
+function openCategory(catId, options = {}) {
+  const { fromHistory = false } = options;
+  if (!ZADES_PRODUCTS[catId]) return;
+
+  renderCategoryPage(catId);
+  setCategoryPageVisibility(true);
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  if (!fromHistory) {
+    history.pushState({ view: CATEGORY_HISTORY_VIEW, catId }, '', `#category-${catId}`);
+  }
+}
+
+function showCollectionsView() {
+  activeCategoryId = null;
+  setCategoryPageVisibility(false);
   // FIX: Single scrollIntoView call (removed duplicate)
   setTimeout(() => {
     document.querySelector('.collections').scrollIntoView({ behavior: 'smooth' });
   }, 50);
 }
+
+function closeCatPage(options = {}) {
+  const { fromHistory = false } = options;
+  if (!fromHistory && history.state?.view === CATEGORY_HISTORY_VIEW) {
+    history.back();
+    return;
+  }
+  showCollectionsView();
+}
+
+if (!history.state || history.state.view !== 'home') {
+  history.replaceState({ view: 'home' }, '', window.location.pathname + window.location.search);
+}
+
+window.addEventListener('popstate', e => {
+  const state = e.state;
+  if (state?.view === CATEGORY_HISTORY_VIEW && state.catId) {
+    openCategory(state.catId, { fromHistory: true });
+    return;
+  }
+
+  if (activeCategoryId) {
+    closeCatPage({ fromHistory: true });
+  }
+});
 
 function switchCardColor(dotEl, prodId, idx) {
   const prod = ALL_PRODUCTS.find(p => p.id === prodId);
@@ -794,7 +826,7 @@ function placeOrder() {
     currency: 'INR',
     name: 'ZADES',
     description: 'Urban Streetwear',
-    image: 'assets/logo-zades.jpeg',
+    image: 'assets/zadesmainlogo.png',
     prefill: { name, contact: mobile, email: currentUser?.email || '' },
     notes: { address: `${addr1}, ${city}, ${state} - ${pincode}`, altmobile },
     theme: { color: '#1a3a6b' },

@@ -3,7 +3,7 @@
    Palette: Black · Beige · Blue · White
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Space+Grotesk:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&family=Playfair+Display:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Space+Grotesk:wght@300;400;500&display=swap');
 
 /* ── THEME VARIABLES ─────────────────────────────────────── */
 :root {
@@ -22,9 +22,13 @@
   --gray:         #7a7060;
   --light-gray:   #d6cfc0;
 
-  --font-serif:   'Playfair Display', serif;
-  --font-body:    'Cormorant Garamond', serif;
-  --font-sans:    'Space Grotesk', sans-serif;
+  --font-brand-serif: 'Playfair Display', serif;
+  --font-brand-body:  'Cormorant Garamond', serif;
+  --font-brand-sans:  'Space Grotesk', sans-serif;
+  --font-serif:   Assistant, sans-serif;
+  --font-body:    Assistant, sans-serif;
+  --font-sans:    Assistant, sans-serif;
+  --font-body-style: normal;
   --nav-h:        64px;
   --transition:   all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -40,6 +44,7 @@ body {
   background: var(--black);
   color: var(--white);
   font-family: var(--font-body);
+  font-style: var(--font-body-style);
   font-size: 15px;
   line-height: 1.65;
   overflow-x: hidden;
@@ -72,9 +77,18 @@ img { max-width: 100%; display: block; }
   z-index: 2; pointer-events: none;
 }
 .loader-logo-svg {
-  width: min(420px, 80vw); height: min(420px, 80vw);
+  width: min(470px, 84vw); height: min(470px, 84vw);
   opacity: 0; transform: scale(3.2);
   will-change: transform, opacity, filter;
+  position: relative;
+  top: 2px;
+}
+.brand-logo {
+  display: block;
+  object-fit: contain;
+}
+.brand-logo--white {
+  filter: brightness(0) invert(1) drop-shadow(0 0 1px rgba(255,255,255,0.25));
 }
 .loader-stage {
   position: absolute; inset: 0;
@@ -87,7 +101,7 @@ img { max-width: 100%; display: block; }
   display: flex; align-items: center; justify-content: center;
 }
 .loader-ltr {
-  font-family: var(--font-serif);
+  font-family: var(--font-brand-serif);
   font-size: min(16vw, 148px);
   font-weight: 900;
   color: var(--white);
@@ -104,7 +118,7 @@ img { max-width: 100%; display: block; }
 }
 .loader-tagline {
   margin-top: 18px;
-  font-family: var(--font-body);
+  font-family: var(--font-brand-body);
   font-size: 11px;
   letter-spacing: 0.32em;
   color: rgba(255,255,255,0);
@@ -147,11 +161,19 @@ img { max-width: 100%; display: block; }
 }
 .auth-logo {
   display: flex; align-items: center; justify-content: center;
-  gap: 10px; margin-bottom: 24px;
+  width: max-content;
+  gap: 14px; margin: 0 auto 24px;
+}
+.auth-brand-logo {
+  width: 64px; height: 64px;
+  flex: 0 0 auto;
+  filter: none;
 }
 .auth-logo span {
-  font-family: var(--font-serif);
-  font-weight: 900; font-size: 22px;
+  display: block;
+  font-family: var(--font-brand-serif);
+  font-weight: 900; font-size: 24px;
+  line-height: 1;
   letter-spacing: 0.18em; color: var(--black);
 }
 .auth-box h2 {
@@ -210,9 +232,9 @@ img { max-width: 100%; display: block; }
   display: flex; align-items: center; gap: 10px;
   color: var(--white); flex-shrink: 0;
 }
-.nav-logo svg { width: 32px; height: 42px; color: var(--white); }
+.nav-brand-logo { width: 32px; height: 42px; }
 .nav-logo span {
-  font-family: var(--font-serif);
+  font-family: var(--font-brand-serif);
   font-size: 18px; font-weight: 900; letter-spacing: 0.22em;
 }
 .nav-left  { display: flex; align-items: center; }
@@ -328,7 +350,7 @@ img { max-width: 100%; display: block; }
 .placeholder-inner { text-align: center; opacity: 0.3; }
 .placeholder-inner svg { width: 48px; height: 48px; margin: 0 auto 12px; }
 .placeholder-inner p {
-  font-family: var(--font-body); font-size: 12px;
+  font-family: var(--font-brand-body); font-size: 12px;
   letter-spacing: 0.3em; text-transform: uppercase;
 }
 .hero-content {
@@ -337,14 +359,14 @@ img { max-width: 100%; display: block; }
   animation: fadeInUp 1.2s ease 0.3s both;
 }
 .hero-brand {
-  font-family: var(--font-serif);
+  font-family: var(--font-brand-serif);
   font-size: clamp(56px, 12vw, 120px);
   font-weight: 900; letter-spacing: 0.22em;
   color: var(--white); line-height: 0.95;
   text-shadow: 0 0 80px rgba(255,255,255,0.15);
 }
 .hero-sub {
-  font-family: var(--font-body);
+  font-family: var(--font-brand-body);
   font-size: clamp(12px, 2vw, 16px);
   letter-spacing: 0.4em; text-transform: uppercase;
   color: rgba(255,255,255,0.6);
@@ -353,7 +375,7 @@ img { max-width: 100%; display: block; }
 .hero-cta {
   display: inline-block; padding: 14px 40px;
   border: 1px solid rgba(255,255,255,0.7);
-  color: var(--white); font-family: var(--font-sans);
+  color: var(--white); font-family: var(--font-brand-sans);
   font-size: 11px; letter-spacing: 0.22em;
   text-transform: uppercase; border-radius: 2px;
   transition: var(--transition);
@@ -371,7 +393,7 @@ img { max-width: 100%; display: block; }
   animation: fadeIn 2s ease 2s both;
 }
 .hero-scroll span {
-  font-family: var(--font-body); font-size: 9px;
+  font-family: var(--font-brand-body); font-size: 9px;
   letter-spacing: 0.4em; text-transform: uppercase;
   color: rgba(255,255,255,0.35);
 }
@@ -1179,8 +1201,9 @@ img { max-width: 100%; display: block; }
   display: flex; align-items: center; justify-content: center;
   gap: 10px; margin-bottom: 16px;
 }
+.footer-brand-logo { width: 36px; height: 36px; }
 .footer-logo span {
-  font-family: var(--font-serif); font-size: 18px;
+  font-family: var(--font-brand-serif); font-size: 18px;
   font-weight: 900; letter-spacing: 0.22em; color: var(--white);
 }
 .footer-tag {

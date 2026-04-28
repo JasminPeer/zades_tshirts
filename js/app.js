@@ -1,4 +1,7 @@
 // ===== ZADES App Logic — Fixed =====
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
 
 // ===== STATE =====
 let cart = JSON.parse(localStorage.getItem('zades_cart') || '[]');
@@ -103,6 +106,7 @@ let currentSize = null;
     loader.style.opacity = '0';
     setTimeout(() => {
       loader.style.display = 'none';
+      window.scrollTo(0, 0);
       if (!currentUser) {
         document.getElementById('auth-modal').style.display = 'flex';
       }
@@ -308,12 +312,26 @@ window.addEventListener('load', () => {
 });
 
 // ===== CATEGORIES =====
+const HOME_HISTORY_VIEW = 'home';
 const CATEGORY_HISTORY_VIEW = 'category';
+const PRODUCT_HISTORY_VIEW = 'product';
 let activeCategoryId = null;
+let activeProductId = null;
+let productReturnView = HOME_HISTORY_VIEW;
+let productReturnCategoryId = null;
 
-function setCategoryPageVisibility(isOpen) {
-  document.getElementById('cat-page').style.display = isOpen ? 'block' : 'none';
-  document.querySelector('.collections').style.display = isOpen ? 'none' : 'block';
+function setPrimaryView(view) {
+  const hero = document.getElementById('hero');
+  const collections = document.querySelector('.collections');
+  const categoryPage = document.getElementById('cat-page');
+  const productPage = document.getElementById('product-page');
+  
+  // Hide hero section when viewing categories or products
+  if (hero) hero.style.display = view === HOME_HISTORY_VIEW ? '' : 'none';
+  
+  if (collections) collections.style.display = view === HOME_HISTORY_VIEW ? 'block' : 'none';
+  if (categoryPage) categoryPage.style.display = view === CATEGORY_HISTORY_VIEW ? 'block' : 'none';
+  if (productPage) productPage.style.display = view === PRODUCT_HISTORY_VIEW ? 'block' : 'none';
 }
 
 function renderCategoryPage(catId) {
@@ -324,6 +342,7 @@ function renderCategoryPage(catId) {
   const grid = document.getElementById('products-grid');
 
   activeCategoryId = catId;
+  activeProductId = null;
   title.textContent = catId.charAt(0).toUpperCase() + catId.slice(1);
   count.textContent = `${prods.length} styles`;
 
@@ -336,7 +355,7 @@ function renderCategoryPage(catId) {
     const tshirtSrc = p.tshirt || p.images[0];
     const modelSrc = p.modelImg || p.images[0];
     return `
-      <div class="product-card" onclick="openProductModal(${JSON.stringify(p).replace(/"/g,'&quot;')})">
+      <div class="product-card" onclick="openProductModal('${p.id}')">
         <div class="product-card-img">
           <img src="${tshirtSrc}" alt="${p.name}" class="pc-tshirt" id="card-tshirt-${p.id}">
           <img src="${modelSrc}" alt="${p.name} model" class="pc-model" id="card-model-${p.id}"
@@ -350,7 +369,7 @@ function renderCategoryPage(catId) {
             <span class="product-price">₹${p.price}</span>
             <span class="stock-pill ${stock.cls}">${stock.label}</span>
           </div>
-          <button class="product-buy-btn" onclick="event.stopPropagation(); openProductModal(${JSON.stringify(p).replace(/"/g,'&quot;')})">
+          <button class="product-buy-btn" onclick="event.stopPropagation(); openProductModal('${p.id}')">
             Buy Now
           </button>
         </div>
@@ -363,7 +382,7 @@ function openCategory(catId, options = {}) {
   if (!ZADES_PRODUCTS[catId]) return;
 
   renderCategoryPage(catId);
-  setCategoryPageVisibility(true);
+  setPrimaryView(CATEGORY_HISTORY_VIEW);
   window.scrollTo({ top: 0, behavior: 'instant' });
 
   if (!fromHistory) {
@@ -373,7 +392,8 @@ function openCategory(catId, options = {}) {
 
 function showCollectionsView() {
   activeCategoryId = null;
-  setCategoryPageVisibility(false);
+  activeProductId = null;
+  setPrimaryView(HOME_HISTORY_VIEW);
   // FIX: Single scrollIntoView call (removed duplicate)
   setTimeout(() => {
     document.querySelector('.collections').scrollIntoView({ behavior: 'smooth' });
@@ -389,20 +409,21 @@ function closeCatPage(options = {}) {
   showCollectionsView();
 }
 
-if (!history.state || history.state.view !== 'home') {
-  history.replaceState({ view: 'home' }, '', window.location.pathname + window.location.search);
+if (!history.state || history.state.view !== HOME_HISTORY_VIEW) {
+  history.replaceState({ view: HOME_HISTORY_VIEW }, '', window.location.pathname + window.location.search);
 }
 
 window.addEventListener('popstate', e => {
   const state = e.state;
+  if (state?.view === PRODUCT_HISTORY_VIEW && state.productId) {
+    openProductModal(state.productId, { fromHistory: true, sourceCategory: state.catId });
+    return;
+  }
   if (state?.view === CATEGORY_HISTORY_VIEW && state.catId) {
     openCategory(state.catId, { fromHistory: true });
     return;
   }
-
-  if (activeCategoryId) {
-    closeCatPage({ fromHistory: true });
-  }
+  showCollectionsView();
 });
 
 function switchCardColor(dotEl, prodId, idx) {
@@ -418,15 +439,23 @@ function switchCardColor(dotEl, prodId, idx) {
 }
 
 // ===== PRODUCT MODAL =====
-function openProductModal(p) {
+function openProductModal(p, options = {}) {
+  const { fromHistory = false, sourceCategory = activeCategoryId } = options;
   if (typeof p === 'string') {
-    try { p = JSON.parse(p); } catch(e) { return; }
+    try { p = JSON.parse(p); } catch(e) { p = ALL_PRODUCTS.find(x => x.id === p); }
   }
+  if (!p) return;
+  productReturnCategoryId = activeCategoryId;
+  productReturnView = activeCategoryId ? CATEGORY_HISTORY_VIEW : HOME_HISTORY_VIEW;
   currentProduct = p;
+  activeProductId = p.id;
+  activeCategoryId = sourceCategory || activeCategoryId || p.category;
   currentColorIdx = 0;
   currentQty = 1;
   currentSize = null;
 
+  document.getElementById('product-page-breadcrumb').textContent =
+    `${(activeCategoryId || p.category).toUpperCase()} COLLECTION`;
   document.getElementById('modal-cat').textContent = p.category.toUpperCase();
   document.getElementById('modal-name').textContent = p.name;
   document.getElementById('modal-desc').textContent = p.desc;
@@ -480,9 +509,15 @@ function openProductModal(p) {
     wishBtn.textContent = inWish ? '♥ Wishlisted' : '♡ Wishlist';
   }
 
-  document.getElementById('product-modal').style.display = 'flex';
-  document.getElementById('overlay').style.display = 'block';
-  document.body.style.overflow = 'hidden';
+  setPrimaryView(PRODUCT_HISTORY_VIEW);
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  if (!fromHistory) {
+    history.pushState(
+      { view: PRODUCT_HISTORY_VIEW, productId: p.id, catId: activeCategoryId },
+      '',
+      `#product-${p.id}`
+    );
+  }
 }
 
 function switchModalImg(src, el) {
@@ -492,9 +527,19 @@ function switchModalImg(src, el) {
   el.classList.add('active');
 }
 
-function closeProductModal() {
-  document.getElementById('product-modal').style.display = 'none';
-  closeAll();
+function closeProductPage(options = {}) {
+  const { fromHistory = false } = options;
+  if (!fromHistory && history.state?.view === PRODUCT_HISTORY_VIEW) {
+    history.back();
+    return;
+  }
+  activeProductId = null;
+  if (productReturnView === CATEGORY_HISTORY_VIEW && productReturnCategoryId && ZADES_PRODUCTS[productReturnCategoryId]) {
+    activeCategoryId = productReturnCategoryId;
+    openCategory(productReturnCategoryId, { fromHistory: true });
+  } else {
+    showCollectionsView();
+  }
 }
 
 function selectColor(idx) {
@@ -549,7 +594,7 @@ function addToCartModal() {
     });
   }
   saveCart();
-  closeProductModal();
+  closeProductPage({ fromHistory: true });
   showToast(`${p.name} added to cart ✦`);
 
   // FIX: Properly closed if block (was never closed before)
@@ -577,7 +622,7 @@ function buyNowModal() {
     cart.push({ id: cartKey, productId: p.id, name: p.name, price: p.price, color, size: currentSize, qty: currentQty, image, category: p.category });
   }
   saveCart();
-  closeProductModal();
+  closeProductPage({ fromHistory: true });
   proceedCheckout();
 }
 
@@ -706,6 +751,7 @@ function addWishToCart(id) {
   const item = wishlist.find(w => w.id === id);
   if (!item) return;
   const prod = ALL_PRODUCTS.find(p => p.id === id);
+  closeAll();
   if (prod) openProductModal(prod);
 }
 
@@ -900,6 +946,11 @@ document.addEventListener('keydown', e => {
   if (adminCode.endsWith('zades2024')) window.location.href = 'admin/index.html';
 });
 function goAdmin() { window.location.href = 'admin/index.html'; }
+
+// ===== COMING SOON HANDLER =====
+function openComingSoonCollection(collectionName) {
+  showToast(`${collectionName} collection coming soon! 🎨`);
+}
 
 // ===== TOAST =====
 let toastTimer;

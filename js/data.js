@@ -14,12 +14,12 @@ const ZADES_PRODUCTS = {
       category: 'oversized',
       // tshirt: oversized__3_.jpeg (blue cherub) & oversized__6_.jpeg (pink cherub)
       // model: dedicated model shots available for each color
-      tshirt: 'assets/cherub_tshirt_blue.jpeg',
+      tshirt: 'assets/bg_blue.jpeg',
       modelImg: 'assets/cherub_model_blue.jpg',
-      images: ['assets/cherub_tshirt_blue.jpeg', 'assets/cherub_tshirt_pink.jpeg'],
+      images: ['assets/bg_blue.jpeg', 'assets/bg_pink.jpeg'],
       colors: [
-        { name: 'Royal Blue', hex: '#2563EB', image: 'assets/cherub_tshirt_blue.jpeg', modelImage: 'assets/cherub_model_blue.jpg' },
-        { name: 'Baby Pink', hex: '#F9A8D4', image: 'assets/cherub_tshirt_pink.jpeg', modelImage: 'assets/cherub_model_pink.jpg' },
+        { name: 'Royal Blue', hex: '#2563EB', image: 'assets/bg_blue.jpeg', modelImage: 'assets/cherub_model_blue.jpg' },
+        { name: 'Baby Pink', hex: '#F9A8D4', image: 'assets/bg_pink.jpeg', modelImage: 'assets/cherub_model_pink.jpg' },
       ],
       sizes: { XS: 5, S: 8, M: 10, L: 6, XL: 3, XXL: 2 },
     },
@@ -31,12 +31,12 @@ const ZADES_PRODUCTS = {
       category: 'oversized',
       // tshirt: oversized__4_.jpeg (black mammoth), oversized__7_.jpeg (white with red mammoth)
       // model: dedicated model shots available for each color
-      tshirt: 'assets/mammoth_tshirt_black.jpeg',
+      tshirt: 'assets/bg_black.jpeg',
       modelImg: 'assets/mammoth_model_black.jpg',
-      images: ['assets/mammoth_tshirt_black.jpeg', 'assets/mammoth_tshirt_white.jpeg'],
+      images: ['assets/bg_black.jpeg', 'assets/bg_white.jpeg'],
       colors: [
-        { name: 'Jet Black', hex: '#111111', image: 'assets/mammoth_tshirt_black.jpeg', modelImage: 'assets/mammoth_model_black.jpg' },
-        { name: 'Pure White', hex: '#F5F5F5', image: 'assets/mammoth_tshirt_white.jpeg', modelImage: 'assets/mammoth_model_white.jpg' },
+        { name: 'Jet Black', hex: '#111111', image: 'assets/bg_black.jpeg', modelImage: 'assets/mammoth_model_black.jpg' },
+        { name: 'Pure White', hex: '#F5F5F5', image: 'assets/bg_white.jpeg', modelImage: 'assets/mammoth_model_white.jpg' },
       ],
       sizes: { XS: 0, S: 5, M: 8, L: 4, XL: 2, XXL: 0 },
     },
@@ -48,11 +48,11 @@ const ZADES_PRODUCTS = {
       category: 'oversized',
       // tshirt: oversized__5_.jpeg (hustle black tshirt)
       // model:  oversized__4_.png (guy wearing hustle tee)
-      tshirt: 'assets/hustle_tshirt.jpeg',
+      tshirt: 'assets/bg_black1.jpeg',
       modelImg: 'assets/hustle_model.png',
-      images: ['assets/hustle_tshirt.jpeg'],
+      images: ['assets/bg_black1.jpeg'],
       colors: [
-        { name: 'Midnight Black', hex: '#0a0a0a', image: 'assets/hustle_tshirt.jpeg', modelImage: 'assets/hustle_model.png' },
+        { name: 'Midnight Black', hex: '#0a0a0a', image: 'assets/bg_black1.jpeg', modelImage: 'assets/hustle_model.png' },
       ],
       sizes: { XS: 2, S: 4, M: 6, L: 5, XL: 3, XXL: 1 },
     },
@@ -64,12 +64,12 @@ const ZADES_PRODUCTS = {
       category: 'oversized',
       // tshirt: oversized.jpeg (sky blue butterfly), oversized__2_.jpeg (khaki butterfly)
       // model:  oversized__2_.png (guy in sky blue butterfly), oversized__3_.png (guy in khaki butterfly)
-      tshirt: 'assets/butterfly_tshirt_blue.jpeg',
+      tshirt: 'assets/bg_lightblue.jpeg',
       modelImg: 'assets/butterfly_model_blue.png',
-      images: ['assets/butterfly_tshirt_blue.jpeg', 'assets/butterfly_tshirt_khaki.jpeg'],
+      images: ['assets/bg_lightblue.jpeg', 'assets/bg_brown.jpeg'],
       colors: [
-        { name: 'Sky Blue', hex: '#93C5FD', image: 'assets/butterfly_tshirt_blue.jpeg', modelImage: 'assets/butterfly_model_blue.png' },
-        { name: 'Khaki Sage', hex: '#A3A380', image: 'assets/butterfly_tshirt_khaki.jpeg', modelImage: 'assets/butterfly_model_khaki.png' },
+        { name: 'Sky Blue', hex: '#93C5FD', image: 'assets/bg_lightblue.jpeg', modelImage: 'assets/butterfly_model_blue.png' },
+        { name: 'Khaki Sage', hex: '#A3A380', image: 'assets/bg_brown.jpeg', modelImage: 'assets/butterfly_model_khaki.png' },
       ],
       sizes: { XS: 3, S: 7, M: 12, L: 8, XL: 4, XXL: 2 },
     },

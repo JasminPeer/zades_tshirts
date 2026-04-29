@@ -39,7 +39,7 @@
 
 /* ── RESET / BASE ────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
   background: var(--black);
   color: var(--white);
@@ -1456,9 +1456,15 @@ img { max-width: 100%; display: block; }
   .modal-btns { flex-direction: column; }
   .form-grid { grid-template-columns: 1fr; }
   .form-grid input.half { grid-column: span 1; }
+  .footer-content { flex-direction: column; gap: 40px; text-align: center; }
+  .footer-left-cols { flex-direction: column; padding-right: 0; gap: 32px; align-items: center; }
+  .footer-col { align-items: center; }
+  .footer { padding: 60px 24px 32px; }
 }
 @media (max-width: 480px) {
   .products-grid { grid-template-columns: 1fr; }
   .categories-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 12px; }
   .sidebar { width: 100%; }
+  .auth-box { padding: 32px 24px; width: 92%; }
+  .contact-insta-grid { grid-template-columns: repeat(2, 1fr); }
 }

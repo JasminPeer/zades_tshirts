@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/style.css?v=1.2">
+<link rel="stylesheet" href="css/style.css?v=1.3">
 
 </head>
 <body>
@@ -159,15 +159,15 @@
       </div>
     </div>
 
-    <!-- OLD MONK (COMING SOON) -->
+    <!-- OLD MONEY (COMING SOON) -->
     <!-- FIX 3: Removed duplicate/conflicting inner HTML. Kept the teaser version. -->
-    <div class="category-card coming" data-cat="old-monk" onclick="openComingSoonCollection('Old Monk')">
+    <div class="category-card coming" data-cat="old-money" onclick="openComingSoonCollection('Old money')">
       <div class="cat-img-wrap coming-soon-wrap">
         <div class="coming-soon-overlay">
           <div class="coming-soon-teaser">
             <span class="cs-icon">🥃</span>
             <span class="cs-label">Next Drop</span>
-            <span class="cs-title">Old Monk</span>
+            <span class="cs-title">Old money</span>
             <span class="cs-badge">Dropping Soon</span>
             <div class="cs-drops"><span></span><span></span><span></span></div>
           </div>
@@ -175,21 +175,21 @@
       </div>
       <div class="cat-info">
         <span class="cat-badge coming">Coming Soon</span>
-        <h3>Old Monk</h3>
+        <h3>Old money</h3>
         <p>Vintage soul. Timeless rebellion.</p>
         <span class="cat-arrow muted">—</span>
       </div>
     </div>
 
-    <!-- FUNK (COMING SOON) -->
+    <!-- EXCLUSIVE (COMING SOON) -->
     <!-- FIX 4: Removed broken nested duplicate divs. Corrected to single clean structure. -->
-    <div class="category-card coming" data-cat="funk" onclick="openComingSoonCollection('Funk')">
+    <div class="category-card coming" data-cat="exclusive" onclick="openComingSoonCollection('Exclusive')">
       <div class="cat-img-wrap coming-soon-wrap" style="background:linear-gradient(145deg,#1a0a2e 0%,#2d1060 100%)">
         <div class="coming-soon-overlay">
           <div class="coming-soon-teaser">
             <span class="cs-icon">🎨</span>
             <span class="cs-label">Future Drop</span>
-            <span class="cs-title">Funk</span>
+            <span class="cs-title">Exclusive</span>
             <span class="cs-badge">Be Notified</span>
             <div class="cs-drops"><span></span><span></span><span></span></div>
           </div>
@@ -197,7 +197,7 @@
       </div>
       <div class="cat-info">
         <span class="cat-badge coming">Coming Soon</span>
-        <h3>Funk</h3>
+        <h3>Exclusive</h3>
         <p>Loud colours. Louder attitude.</p>
         <span class="cat-arrow muted">—</span>
       </div>
@@ -247,6 +247,34 @@
           <button class="btn-wishlist" onclick="addToWishlistModal()">♡ Wishlist</button>
           <button class="btn-cart" onclick="buyNowModal()">Buy Now</button>
           <button class="btn-cart" onclick="addToCartModal()">Add to Cart</button>
+        </div>
+        
+        <div class="product-tabs-container">
+          <div class="product-tabs-header">
+            <button class="tab-btn active" onclick="switchProductTab('details')">Details & Description</button>
+            <button class="tab-btn" onclick="switchProductTab('washcare')">Washcare</button>
+          </div>
+          <div class="product-tabs-content">
+            <div id="tab-details" class="tab-pane active">
+              <div class="tab-section">
+                <h4>Details</h4>
+                <ul id="modal-tab-details-list"></ul>
+              </div>
+              <div class="tab-section">
+                <h4>Description</h4>
+                <p id="modal-tab-desc"></p>
+              </div>
+            </div>
+            <div id="tab-washcare" class="tab-pane" style="display:none;">
+              <div class="tab-section">
+                <ul class="washcare-list">
+                  <li>Reverse wash only</li>
+                  <li>No direct iron on print</li>
+                  <li>Steam iron recommended</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -401,8 +429,8 @@
 </div>
 
 <!-- FIX 5: Removed duplicate script tags. Kept only js/ path versions. -->
-<script src="js/data.js?v=1.1"></script>
-<script src="js/app.js?v=1.2"></script>
+<script src="js/data.js?v=1.2"></script>
+<script src="js/app.js?v=1.3"></script>
 
 </body>
 </html>

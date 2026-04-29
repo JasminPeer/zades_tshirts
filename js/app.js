@@ -438,6 +438,17 @@ function switchCardColor(dotEl, prodId, idx) {
   });
 }
 
+// ===== PRODUCT TABS =====
+function switchProductTab(tabId) {
+  const tabs = ['details', 'washcare', 'shipping'];
+  tabs.forEach(t => {
+    const btn = document.querySelector(`.tab-btn[onclick="switchProductTab('${t}')"]`);
+    const pane = document.getElementById(`tab-${t}`);
+    if (btn) btn.classList.toggle('active', t === tabId);
+    if (pane) pane.style.display = t === tabId ? 'block' : 'none';
+  });
+}
+
 // ===== PRODUCT MODAL =====
 function openProductModal(p, options = {}) {
   const { fromHistory = false, sourceCategory = activeCategoryId } = options;
@@ -458,7 +469,7 @@ function openProductModal(p, options = {}) {
     `${(activeCategoryId || p.category).toUpperCase()} COLLECTION`;
   document.getElementById('modal-cat').textContent = p.category.toUpperCase();
   document.getElementById('modal-name').textContent = p.name;
-  document.getElementById('modal-desc').textContent = p.desc;
+  document.getElementById('modal-desc').innerHTML = '';
   document.getElementById('modal-price').textContent = `₹${p.price}`;
   document.getElementById('modal-qty').textContent = '1';
 
@@ -507,6 +518,20 @@ function openProductModal(p, options = {}) {
   if (wishBtn) {
     const inWish = wishlist.some(w => w.id === p.id);
     wishBtn.textContent = inWish ? '♥ Wishlisted' : '♡ Wishlist';
+  }
+
+  // Populate tabs
+  const detailsList = document.getElementById('modal-tab-details-list');
+  if (detailsList && p.details) {
+    detailsList.innerHTML = p.details.map(d => `<li>${d}</li>`).join('');
+  } else if (detailsList) {
+    detailsList.innerHTML = '';
+  }
+  const tabDesc = document.getElementById('modal-tab-desc');
+  if (tabDesc) tabDesc.innerHTML = p.desc;
+  
+  if (typeof switchProductTab === 'function') {
+    switchProductTab('details');
   }
 
   setPrimaryView(PRODUCT_HISTORY_VIEW);
